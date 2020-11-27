@@ -23,9 +23,9 @@ public class OwnerServiceImpl implements OwnerService{
 	}
 
 	@Override
-	public int deleteRoom(String roomId) {
+	public void deleteRoom(String roomId) {
 		
-		return roomClient.deleteRoom(roomId);
+		roomClient.deleteRoom(roomId);
 		
 	}
 

@@ -3,6 +3,8 @@ package com.roomrental.owner.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,7 @@ public class OwnerController {
 	OwnerService service;
 	
 	
-	@PostMapping
+	@PostMapping("/addroom")
 	public ResponseEntity<?> addRoom(NewRoom newRoom)
 	{
 		log.debug("addRoom() inside OwnerController");
@@ -27,11 +29,12 @@ public class OwnerController {
 	}
 	
 	
-	@PostMapping
-	public ResponseEntity<?> deleteRoom(String roomId)
+	@DeleteMapping("/deleteroom/{roomId}")
+	public ResponseEntity<?> deleteRoom(@PathVariable("roomId") String roomId)
 	{
 		log.debug("deleteRoom() inside OwnerController");
-		return new ResponseEntity<>(service.deleteRoom(roomId),HttpStatus.OK);
+		service.deleteRoom(roomId);
+		return new ResponseEntity<>("RoomDeleted",HttpStatus.OK);
 		
 	}
 	

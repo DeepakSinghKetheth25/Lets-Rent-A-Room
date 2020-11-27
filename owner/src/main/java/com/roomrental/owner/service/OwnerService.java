@@ -6,6 +6,6 @@ public interface OwnerService {
 
 	public RoomResponse addRoom(NewRoom newroom);
 	
-	public int deleteRoom(String roomId);
+	public void deleteRoom(String roomId);
 	
 }

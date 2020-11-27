@@ -15,6 +15,6 @@ public interface RoomDetailsClient {
 	public RoomResponse addRoom(NewRoom newRoom);
 
 	@DeleteMapping("/deleteroom/{roomId}")
-	public int deleteRoom(@PathVariable("roomId") String roomId);
+	public void deleteRoom(@PathVariable("roomId") String roomId);
 
 }
