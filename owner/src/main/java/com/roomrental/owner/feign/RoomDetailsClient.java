@@ -11,10 +11,10 @@ import com.roomrental.owner.model.RoomResponse;
 @FeignClient(name = "Room-Client", url = "${room-client}")
 public interface RoomDetailsClient {
 	
-	@PostMapping("/addRoom")
+	@PostMapping("/addroom")
 	public RoomResponse addRoom(NewRoom newRoom);
 
-	@DeleteMapping("/deleteRoom/{roomId}")
+	@DeleteMapping("/deleteroom/{roomId}")
 	public int deleteRoom(@PathVariable("roomId") String roomId);
 
 }
