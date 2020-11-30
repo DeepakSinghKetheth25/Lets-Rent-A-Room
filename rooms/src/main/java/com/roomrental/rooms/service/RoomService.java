@@ -7,4 +7,6 @@ public interface RoomService {
 	public RoomDetails addNewRoom(RoomDetails room);
 
 	public void deleteRoom(String roomId);
+
+	public RoomDetails findRoom(String roomId);
 }

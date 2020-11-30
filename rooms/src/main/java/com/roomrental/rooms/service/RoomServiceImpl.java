@@ -22,4 +22,9 @@ public class RoomServiceImpl implements RoomService {
 		 roomRepo.deleteById(roomId);
 	}
 
+	@Override
+	public RoomDetails findRoom(String roomId) {
+		return roomRepo.findById(roomId).orElse(null);
+	}
+
 }
