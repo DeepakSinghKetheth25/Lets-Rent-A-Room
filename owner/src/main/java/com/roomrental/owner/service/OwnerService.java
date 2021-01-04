@@ -4,8 +4,8 @@ import com.roomrental.owner.model.RoomResponse;
 
 public interface OwnerService {
 
-	public RoomResponse addRoom(NewRoom newroom);
+	public RoomResponse addRoom(String header,NewRoom newroom) throws Exception;
 	
-	public void deleteRoom(String roomId);
+	public void deleteRoom(String header,String roomId) throws Exception;
 	
 }
