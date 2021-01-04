@@ -1,5 +1,7 @@
 package com.roomrental.authorization.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import com.roomrental.authorization.model.AuthenticationRequest;
 import com.roomrental.authorization.model.AuthenticationResponse;
 import com.roomrental.authorization.model.DAOUser;
 import com.roomrental.authorization.model.UserDTO;
+import com.roomrental.authorization.model.ValidateResponse;
 import com.roomrental.authorization.service.CustomUserDetailsService;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -82,52 +85,37 @@ public class AuthenticationController {
 		return userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 	}
 	
-	
-	public ResponseEntity<?> validate(@RequestHeader("Authorization") String tokenHeader) throws Exception
+
+	@PostMapping("/validate")
+	public ValidateResponse validate(@RequestHeader("Authorization") String tokenHeader)
 	{
-		System.out.println("Auth Header: " + tokenHeader);
 		
-		String username = null;
+		System.out.println("Entered for API validation");
 		String jwtToken = null;
-		
-		//Jwt Token is in form of Bearer String. Remove Bearer word & get only Token.
-		if(tokenHeader!=null && tokenHeader.startsWith("Bearer ") )
-			{	
-				jwtToken = tokenHeader.substring(7);
-		  		try {
-		   			username = jwtUtil.getUsernameFromToken(jwtToken);
-		   			}
-		  		catch(IllegalArgumentException e) { 
-		  			throw new IllegalArgumentException("Unable To get JWT Token");}
-				catch(ExpiredJwtException e) {
-		  			throw new Exception("JWT Token has expired");}
-		  		catch(Exception e)
-			   		{
-		   			throw new Exception("Invalid Token");
-			   		}		   	
+		if(tokenHeader!=null && tokenHeader.startsWith("Bearer "))
+		{	
+			jwtToken = tokenHeader.substring(7);
+			if(jwtUtil.validateToken(jwtToken))
+			{
+				UserDetails currentUser = this.userDetailsService.loadUserByUsername(jwtUtil.getUsernameFromToken(jwtToken));
+				return new ValidateResponse(currentUser.getUsername(),currentUser.getAuthorities().toString());
 			}
+			else 
+				return null;
+		}
 		else 
 			{
-//				throw new InvalidTokenException("Token Not Found");
-			return new ResponseEntity<>(true,HttpStatus.OK);
-			
+			return null;
 			}
 		
-			//Once we get the token validate it.
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			
-			if (jwtUtil.validateToken(jwtToken)) 
-				return new ResponseEntity<>("Success",HttpStatus.OK);
-			else
-				throw new Exception("Invalid Username/Password");
 	}
 	
-	@GetMapping("/check")
-	public String check()
+	
+	@GetMapping("/getusers")
+	public List<DAOUser> check()
 	{
-		return "Check Success";
+		return userDetailsService.getusers();
 	}
-	
 
 	@PostMapping("/register")
 	public ResponseEntity<?> saveUser(@RequestBody DAOUser user) throws Exception {

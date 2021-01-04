@@ -26,6 +26,7 @@ public class DAOUser {
 	private String password;
 	@Column
 	private String name;
+	
 	@Column
 	private String address;
 	@Column

@@ -48,4 +48,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return userDao.save(user);
 	}
 
+	public List<DAOUser> getusers() {
+		// TODO Auto-generated method stub
+		return userDao.findAll();
+	}
+
 }
